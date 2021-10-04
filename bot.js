@@ -11,25 +11,24 @@ const {Client, Intents} = require('discord.js');
 const client = new Client({intents: [Intents.FLAGS.GUILDS,
   Intents.FLAGS.GUILD_MESSAGES]});
 
-client.login(process.env.DISCORD_TOKEN);
-
-client.on('ready', readyDiscord);
-
-/**
- *
- */
-function readyDiscord() {
+// As soon as the bot is ready
+client.once('ready', () => {
   console.log('I am ready!');
-};
+});
 
-client.on('messageCreate', onMessageCreate);
-/**
- *
- * @param {*} msg
- */
-function onMessageCreate(msg) {
-  if (msg.channel.id == process.env.DISCORD_BOT_CHANNEL &&
-    msg.content === 'Hello') {
-    msg.reply('Hallo');
+// Bot logs into discord with its token
+client.login(process.env.TOKEN);
+
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isCommand()) return;
+
+  const {commandName} = interaction;
+
+  if (commandName === 'ping') {
+    await interaction.reply('Pong!');
+  } else if (commandName === 'server') {
+    await interaction.reply('Server info.');
+  } else if (commandName === 'user') {
+    await interaction.reply('User info.');
   }
-}
+});
