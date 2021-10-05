@@ -22,31 +22,19 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
+// setup events
+const eventFiles = fs.readdirSync('./events').filter((file) =>
+  file.endsWith('.js'));
+
+// event handler
+for (const file of eventFiles) {
+  const event = require(`./events/${file}`);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
+  }
+}
+
 // Bot logs into discord with its token
 client.login(process.env.TOKEN);
-
-// As soon as the bot is ready
-client.once('ready', () => {
-  console.log('I am ready!');
-});
-
-// command handler
-client.on('interactionCreate', async (interaction) => {
-  // return if interaction is not a command
-  if (!interaction.isCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-
-  // return if command does not exist
-  if (!command) return;
-
-  // reply by executing appropriate command
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: 'There was an error while executing this command',
-      ephemeral: true});
-  }
-});
