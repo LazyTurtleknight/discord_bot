@@ -5,9 +5,6 @@ const gameInstance = require('../werewolf/WerewolfGame.js');
 const {MessageActionRow, MessageSelectMenu, MessageButton} =
     require('discord.js');
 
-// game container for a game
-// TODO: if memory issues occur maybe change memory management of this object
-
 module.exports = {
   data: new SlashCommandBuilder()
       .setName(game.NAME)
@@ -18,9 +15,6 @@ module.exports = {
       .addSubcommand((subcommand) => subcommand
           .setName(subcommands.create)
           .setDescription('Create a game.'))
-      .addSubcommand((subcommand) => subcommand
-          .setName(subcommands.join)
-          .setDescription('Join a game of werewolf.'))
       .addSubcommand((subcommand) => subcommand
           .setName(subcommands.start)
           .setDescription('Starts the game.'))
@@ -61,43 +55,6 @@ module.exports = {
         } catch (error) {
           console.error(error);
           interaction.reply(`Something went wrong while creating a game.`);
-        }
-        break;
-
-      // add a player to the existing game if present
-      case subcommands.join:
-
-        // there is no existing game
-        if (!gameInstance) {
-          interaction.reply(`Before joining a game` +
-          ` you need to create a game with the create command.`);
-        } else {
-          switch (gameInstance.status) {
-            // game is uninitialized
-            case game.STATUS.uninitialized:
-              interaction.reply(`Create a game first.`);
-              break;
-
-            // game is being created
-            case game.STATUS.inCreation:
-              gameInstance.addPlayer(interaction.member.user.id);
-              interaction.reply(`${interaction.member.user.username} joined.`);
-              break;
-
-            // game is already running
-            case game.STATUS.running:
-              interaction.reply(`You can not join as ` +
-              `the game is already running.`);
-              break;
-
-            default:
-              interaction.reply(`Something unexpected happened.` +
-              `Try ending the game with the end command and ` +
-              `then create a new game with the create command.`);
-              console.log(gameInstance.status,
-                  interaction.options.getSubcommand());
-              break;
-          }
         }
         break;
 
@@ -160,12 +117,12 @@ module.exports = {
           switch (gameInstance.status) {
             case game.STATUS.inCreation:
               interaction.reply(`Ending the game.`);
-              gameInstance = null;
+              gameInstance.clear();
               break;
 
             case game.STATUS.running:
               interaction.reply(`Ending the game.`);
-              gameInstance = null;
+              gameInstance.clear();
               break;
 
             default:
