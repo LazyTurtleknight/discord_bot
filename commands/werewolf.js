@@ -28,8 +28,8 @@ module.exports = {
         interaction.reply(
             `To creat a game use command ` +
             subcommands.create + `.\n`+
-            `Then, players may join with the command ` +
-            subcommands.join + `.\n` +
+            `Then, a Join button will show up which can be used to join` +
+            ` the game.\n`+
             `Once all players joined the game, start it with command ` +
             subcommands.start + ` and choose possible player roles.\n` +
             `If anything happens, just end the game manually with the command` +
