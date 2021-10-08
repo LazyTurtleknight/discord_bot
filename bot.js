@@ -22,6 +22,30 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
+// setup isSelectMenu event
+client.selectMenu = new Collection();
+const selectMenuFiles = fs.readdirSync('./events/selectMenu/').
+    filter((file) => file.endsWith('.js'));
+
+for (const file of selectMenuFiles) {
+  // require source with command
+  const selectMenu = require(`./events/selectMenu/${file}`);
+  // set new item with name as key and command as value
+  client.selectMenu.set(selectMenu.name, selectMenu);
+}
+
+// setup isSelectMenu event
+client.buttons = new Collection();
+const buttonFiles = fs.readdirSync('./events/button').
+    filter((file) => file.endsWith('.js'));
+
+for (const file of buttonFiles) {
+  // require source with command
+  const button = require(`./events/button/${file}`);
+  // set new item with name as key and command as value
+  client.buttons.set(button.name, button);
+}
+
 // setup events
 const eventFiles = fs.readdirSync('./events').filter((file) =>
   file.endsWith('.js'));
