@@ -1,13 +1,13 @@
 
-const {game, roles} = require('./constants.js');
+const {game} = require('./constants.js');
 
 /**
  * Werewolf game container.
  */
 class WerewolfGame {
   /**
-     * Construct empty game object.
-     */
+   * Construct empty game object.
+   */
   constructor() {
     this.status = game.STATUS.uninitialized;
   }
@@ -19,7 +19,6 @@ class WerewolfGame {
     this.status = game.STATUS.inCreation;
     this.phase = game.PHASE.none;
     this.players = new Set();
-    this.roles = new Set();
     this.playerRoles = new Map();
   }
 
@@ -33,30 +32,38 @@ class WerewolfGame {
     this.roles = null;
     this.playerRoles = null;
   }
+
   /**
-     * Starts the game.
-     */
+   * Start role selection.
+   */
+  startRoleSelection() {
+    this.roles = new Set();
+    this.status = game.STATUS.inRoleSelection;
+  }
+  /**
+   * Starts the game.
+   */
   start() {
     this.status = game.STATUS.running;
     this.phase = game.PHASE.night;
   }
 
   /**
-     * Adds a player to the game.
-     *
-     * @param {number} playerId is the discord client id of a player.
-     * @param {roles} role is the role of a player.
-     */
+   * Adds a player to the game.
+   *
+   * @param {number} playerId is the discord client id of a player.
+   * @param {roles} role is the role of a player.
+   */
   addPlayer(playerId) {
     if (!this.players.has(playerId)) {
       this.players.add(playerId);
     }
   }
   /**
-     * Remove a player from the game.
-     *
-     * @param {number} playerId is the discord client id of a player.
-     */
+   * Remove a player from the game.
+   *
+   * @param {number} playerId is the discord client id of a player.
+   */
   removePlayer(playerId) {
     if (this.player.has(playerId)) {
       this.players.delete(playerId);

@@ -3,6 +3,7 @@ const game = {
   NAME: 'werewolf',
   STATUS: {
     inCreation: 'in creation',
+    inRoleSelection: 'in role selection',
     running: 'running',
     uninitialized: 'uninitialized',
   },
@@ -30,4 +31,11 @@ const subcommands = {
   end: 'end',
 };
 
-module.exports = {game, roles, subcommands};
+const events = {
+  selectRoles: 'selectRolesWerewolf',
+  start: 'startWerewolf',
+  join: 'joinWerewolf',
+  finishSelection: 'finishRoleSelectionWerewolf',
+};
+
+module.exports = {game, roles, subcommands, events};

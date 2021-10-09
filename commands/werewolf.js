@@ -1,5 +1,5 @@
 
-const {game, roles, subcommands} = require('../werewolf/constants.js');
+const {game, roles, subcommands, events} = require('../werewolf/constants.js');
 const {SlashCommandBuilder} = require('@discordjs/builders');
 const gameInstance = require('../werewolf/WerewolfGame.js');
 const {MessageActionRow, MessageSelectMenu, MessageButton} =
@@ -44,7 +44,7 @@ module.exports = {
           const row = new MessageActionRow()
               .addComponents(
                   new MessageButton()
-                      .setCustomId('joinWerewolf')
+                      .setCustomId(events.join)
                       .setLabel('Join')
                       .setStyle('PRIMARY'),
               );

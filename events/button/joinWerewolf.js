@@ -1,9 +1,10 @@
 const gameInstance = require('../../werewolf/WerewolfGame');
+const {events} = require('../../werewolf/constants.js');
 const {MessageActionRow, MessageButton, MessageEmbed} =
     require('discord.js');
 
 module.exports = {
-  name: 'joinWerewolf',
+  name: events.join,
   execute(interaction) {
     console.log(`${interaction.user.tag} in #${interaction.channel.name} ` +
     `tried to join the game.`);
@@ -13,7 +14,7 @@ module.exports = {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId('startWerewolf')
+                .setCustomId(events.start)
                 .setLabel('Start')
                 .setStyle('SUCCESS'),
         );
