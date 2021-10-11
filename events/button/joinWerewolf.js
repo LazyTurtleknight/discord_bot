@@ -5,7 +5,7 @@ const {MessageActionRow, MessageButton, MessageEmbed} =
 
 module.exports = {
   name: events.join,
-  execute(interaction) {
+  async execute(interaction) {
     console.log(`${interaction.user.tag} in #${interaction.channel.name} ` +
     `tried to join the game.`);
     // add player to game container
@@ -14,7 +14,7 @@ module.exports = {
     const row = new MessageActionRow()
         .addComponents(
             new MessageButton()
-                .setCustomId(events.start)
+                .setCustomId(events.startRoleSelection)
                 .setLabel('Start')
                 .setStyle('SUCCESS'),
         );
@@ -29,7 +29,7 @@ module.exports = {
         .setTitle('Players')
         .setDescription(`${playerNames}`);
 
-    interaction.update({
+    await interaction.update({
       content: interaction.message.content,
       components: [interaction.message.components[0], row],
       embeds: [embed],

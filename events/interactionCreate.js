@@ -1,6 +1,6 @@
 module.exports = {
   name: 'interactionCreate',
-  execute(interaction) {
+  async execute(interaction) {
     console.log(`${interaction.user.tag} in #${interaction.channel.name} ` +
     `triggered an interaction.`);
 
@@ -17,7 +17,7 @@ module.exports = {
         command.execute(interaction);
       } catch (error) {
         console.error(error);
-        interaction.reply({
+        await interaction.reply({
           content: 'There was an error while executing this command',
           ephemeral: true});
       }
@@ -33,7 +33,7 @@ module.exports = {
         SelectMenuEvent.execute(interaction);
       } catch (error) {
         console.error(error);
-        interaction.reply({
+        await interaction.reply({
           content: 'There was an error while executing this command',
           ephemeral: true});
       }
@@ -49,7 +49,7 @@ module.exports = {
         buttonEvent.execute(interaction);
       } catch (error) {
         console.error(error);
-        interaction.reply({
+        await interaction.reply({
           content: 'There was an error while executing this command',
           ephemeral: true});
       }

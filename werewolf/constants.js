@@ -16,11 +16,11 @@ const game = {
 };
 
 const roles = {
-  villager: 'villager',
-  werewolf: 'werewolf',
-  whitewolf: 'white wolf',
-  mayor: 'mayor',
-  hunter: 'hunter',
+  villager: 'Villager',
+  werewolf: 'Werewolf',
+  whitewolf: 'White wolf',
+  mayor: 'Mayor',
+  hunter: 'Hunter',
 };
 
 const subcommands = {
@@ -33,6 +33,7 @@ const subcommands = {
 
 const events = {
   selectRoles: 'selectRolesWerewolf',
+  startRoleSelection: 'startRoleSelection',
   start: 'startWerewolf',
   join: 'joinWerewolf',
   finishSelection: 'finishRoleSelectionWerewolf',
