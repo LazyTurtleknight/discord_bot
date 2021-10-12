@@ -1,5 +1,5 @@
 
-const {game, roles, subcommands, events} = require('../werewolf/constants.js');
+const {game, subcommands, events} = require('../werewolf/constants.js');
 const {SlashCommandBuilder} = require('@discordjs/builders');
 const gameInstance = require('../werewolf/WerewolfGame.js');
 const {MessageActionRow, MessageButton} =
@@ -22,7 +22,7 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case subcommands.info:
         // quick explanation how to play
-        interaction.reply(
+        await interaction.reply(
             `To creat a game use command ` +
             subcommands.create + `.\n`+
             `Then, a Join button will show up which can be used to join` +
@@ -36,7 +36,7 @@ module.exports = {
         // create a werewolf game instance
         try {
           gameInstance.initialize();
-          interaction.reply(`Successfully created a game. ` +
+          await interaction.reply(`Successfully created a game. ` +
           `Players can join the game now.`);
           const row = new MessageActionRow()
               .addComponents(
@@ -45,35 +45,36 @@ module.exports = {
                       .setLabel('Join')
                       .setStyle('PRIMARY'),
               );
-          interaction.followUp({
+          await interaction.followUp({
             content: `Join by pressing the button.`,
             components: [row],
           });
         } catch (error) {
           console.error(error);
-          interaction.reply(`Something went wrong while creating a game.`);
+          await interaction.reply(
+              `Something went wrong while creating a game.`);
         }
         break;
 
       // end the game
       case subcommands.end:
         if (!gameInstance) {
-          interaction.reply(`Before ending a game` +
+          await interaction.reply(`Before ending a game` +
           ` you need to create a game with the create command.`);
         } else {
           switch (gameInstance.status) {
             case game.STATUS.inCreation:
-              interaction.reply(`Ending the game.`);
+              await interaction.reply(`Ending the game.`);
               gameInstance.clear();
               break;
 
             case game.STATUS.running:
-              interaction.reply(`Ending the game.`);
+              await interaction.reply(`Ending the game.`);
               gameInstance.clear();
               break;
 
             default:
-              interaction.reply(`Something unexpected happened.` +
+              await interaction.reply(`Something unexpected happened.` +
               `Try restarting the bot.`);
               console.log(gameInstance.status,
                   interaction.options.getSubcommand());
