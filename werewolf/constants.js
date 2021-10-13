@@ -16,11 +16,26 @@ const game = {
 };
 
 const roles = {
-  villager: 'Villager',
-  werewolf: 'Werewolf',
-  whitewolf: 'White wolf',
-  mayor: 'Mayor',
-  hunter: 'Hunter',
+  villager: {
+    name: 'Villager',
+    fraction: 'village',
+  },
+  werewolf: {
+    name: 'Werewolf',
+    fraction: 'werewolf',
+  },
+  doppelganger: {
+    name: 'Doppelganger',
+    fraction: 'village',
+  },
+  mayor: {
+    name: 'Mayor',
+    fraction: 'village',
+  },
+  hunter: {
+    name: 'Hunter',
+    fraction: 'village',
+  },
 };
 
 const subcommands = {

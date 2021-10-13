@@ -11,8 +11,8 @@ module.exports = {
     const roleArray = [];
     for (const key of Object.keys(roles)) {
       roleArray.push({
-        label: roles[key],
-        description: roles[key],
+        label: roles[key].name,
+        description: roles[key].name,
         value: key,
       });
     }
