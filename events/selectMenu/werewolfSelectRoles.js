@@ -5,6 +5,12 @@ const {MessageActionRow, MessageButton} = require('discord.js');
 module.exports = {
   name: events.selectRoles,
   async execute(interaction) {
+    // After the roles have been selected remove select menu.
+    await interaction.update({
+      content: interaction.message.content,
+      components: [],
+    });
+
     for (const role of interaction.values) {
       gameInstance.handleRole(role);
     }
@@ -16,7 +22,7 @@ module.exports = {
                 .setLabel('Start')
                 .setStyle('SUCCESS'),
         );
-    await interaction.reply({
+    await interaction.followUp({
       content: `Everything is set up. Press Start when everyone is ready`,
       components: [row],
     });

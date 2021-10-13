@@ -6,6 +6,11 @@ const {MessageActionRow, MessageSelectMenu} =
 module.exports = {
   name: events.startRoleSelection,
   async execute(interaction) {
+    // After the start button is pressed remove it.
+    await interaction.update({
+      content: interaction.message.content,
+      components: [],
+    });
     gameInstance.startRoleSelection();
     // collect all possible roles
     const roleArray = [];
@@ -26,7 +31,7 @@ module.exports = {
                 .addOptions(roleArray),
         );
 
-    await interaction.reply({
+    await interaction.followUp({
       content: 'Select roles to play with.',
       components: [roleSelectRow],
       ephemeral: true,

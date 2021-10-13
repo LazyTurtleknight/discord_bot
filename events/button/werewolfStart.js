@@ -4,7 +4,12 @@ const gameInstance = require('../../werewolf/WerewolfGame.js');
 module.exports = {
   name: events.start,
   async execute(interaction) {
-    interaction.reply({
+    // After the start button is pressed remove it.
+    await interaction.update({
+      content: interaction.message.content,
+      components: [],
+    });
+    await interaction.followUp({
       content: `The game starts!`,
     });
     gameInstance.start();
