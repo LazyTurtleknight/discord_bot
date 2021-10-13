@@ -88,7 +88,7 @@ class WerewolfGame {
 
   /**
    * Remove a role.
-   * @param {roles} role to add.
+   * @param {roles} role to remove.
    */
   removeRole(role) {
     this.roles.delete(role);
@@ -108,12 +108,31 @@ class WerewolfGame {
 
   /**
    * Map a player to a role.
-   * @param {number} playerId Id of player to assign role to.
-   * @param {roles} role to assign to player
+   * @param {number} playerId used to assign role to.
+   * @param {roles} role playerId will be mapped to.
    */
   assignRole(playerId, role) {
     if (!(playerId in Object.keys(this.playerRoles))) {
       this.playerRoles.set(playerId, role);
+    }
+  }
+
+  /**
+   * Add a nominee to hang.
+   * @param {number} playerId needed for hanging vote.
+   */
+  addNominee(playerId) {
+    if (playerId in this.nominees) {
+      this.nominees.add(playerId);
+    }
+  }
+  /**
+   * Vote for nominee.
+   * @param {number} playerId player to vote for.
+   */
+  votePlayer(playerId) {
+    if (playerId in this.nominees) {
+      this.nominees[playerId]++;
     }
   }
 };

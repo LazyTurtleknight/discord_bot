@@ -37,6 +37,9 @@ const events = {
   start: 'startWerewolf',
   join: 'joinWerewolf',
   finishSelection: 'finishRoleSelectionWerewolf',
+  nominate: 'nominate',
+  startVote: 'startVote',
+  votePlayer: 'votePlayer',
 };
 
 module.exports = {game, roles, subcommands, events};
