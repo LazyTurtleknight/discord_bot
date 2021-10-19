@@ -1,5 +1,4 @@
-
-const {game} = require('./constants.js');
+const {game, roles} = require('./constants.js');
 
 /**
  * Werewolf game container.
@@ -46,6 +45,7 @@ class WerewolfGame {
   start() {
     this.status = game.STATUS.running;
     this.phase = game.PHASE.night;
+    this.assignRoles();
   }
 
   /**
@@ -110,13 +110,71 @@ class WerewolfGame {
    * Map a player to a role.
    * @param {number} playerId Id of player to assign role to.
    * @param {roles} role to assign to player
+   * @return {boolean} indicating if a role was assigned or not
    */
-  assignRole(playerId, role) {
+  assignRoleToPlayer(playerId, role) {
+    // If a player already has a role, skip assignment.
     if (!(playerId in Object.keys(this.playerRoles))) {
       this.playerRoles.set(playerId, role);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Assign roles to players.
+   */
+  assignRoles() {
+    /**
+     * First, select werewolfs.
+     * Rules:
+     * - 1-6 players add 1 werewolf
+     * - 7-14 players add 2 werewolfs
+     * - 15+ players add 2 + (1 for every 4 players) werewolfs
+     */
+    // shuffle array of players
+    const playerArray = Array.from(this.players).sort(
+        (a, b) => 0.5 - Math.random());
+    if (this.players.length <= 6) {
+      this.assignRoleToPlayer(playerArray[0], roles.werewolf);
+    } else if (this.length <= 14) {
+      this.assignRoleToPlayer(playerArray[0], roles.werewolf);
+      this.assignRoleToPlayer(playerArray[1], roles.werewolf);
+    } else if (this.players.length > 15) {
+      for (let index = 0; index*4 < this.players.length; index++) {
+        this.assignRoleToPlayer(playerArray[index], roles.werewolf);
+      }
+    }
+
+    // Assign roles to player without a role.
+    for (const role of this.roles) {
+      for (let playerIndex = 0;
+        !this.assignRoleToPlayer(playerArray[playerIndex], role) &&
+        playerIndex < playerArray.length;
+        playerIndex++) {
+        /**
+         * The for statement handles role assignment with assignRoleToPlayer
+         * as it returns true if a role was assigned and then
+         * instantly ends the loop.
+         */
+      }
     }
   }
-};
+  /**
+   * Fetch all player id with a given role.
+   * @param {role} role used to filter for players with that role
+   * @return {list} of player ids with that role
+   */
+  getPlayerWithRole(role) {
+    const playersWithRole = [];
+    for (const player in Object.keys(this.playerRoles)) {
+      if (this.playerRoles[player].name === role) {
+        playersWithRole.push(player);
+      }
+    }
+    return playersWithRole;
+  }
+}
 
 const gameInstance = new WerewolfGame();
 

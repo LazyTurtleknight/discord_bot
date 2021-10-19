@@ -41,8 +41,6 @@ const roles = {
 const subcommands = {
   info: 'info',
   create: 'create',
-  join: 'join',
-  start: 'start',
   end: 'end',
 };
 
