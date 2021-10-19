@@ -114,7 +114,7 @@ class WerewolfGame {
    */
   assignRoleToPlayer(playerId, role) {
     // If a player already has a role, skip assignment.
-    if (!(playerId in Object.keys(this.playerRoles))) {
+    if (!this.playerRoles.has(playerId)) {
       this.playerRoles.set(playerId, role);
       return true;
     }
@@ -130,33 +130,34 @@ class WerewolfGame {
      * Rules:
      * - 1-6 players add 1 werewolf
      * - 7-14 players add 2 werewolfs
-     * - 15+ players add 2 + (1 for every 4 players) werewolfs
+     * - 15+ players add 1 werewolf for every 4 players
      */
     // shuffle array of players
     const playerArray = Array.from(this.players).sort(
         (a, b) => 0.5 - Math.random());
-    if (this.players.length <= 6) {
+    if (this.players.size <= 6) {
       this.assignRoleToPlayer(playerArray[0], roles.werewolf);
-    } else if (this.length <= 14) {
+    } else if (this.players.size <= 14) {
       this.assignRoleToPlayer(playerArray[0], roles.werewolf);
       this.assignRoleToPlayer(playerArray[1], roles.werewolf);
-    } else if (this.players.length > 15) {
-      for (let index = 0; index*4 < this.players.length; index++) {
+    } else if (this.players.size > 15) {
+      for (let index = 0; index*4 < this.players.size; index++) {
         this.assignRoleToPlayer(playerArray[index], roles.werewolf);
       }
     }
 
     // Assign roles to player without a role.
     for (const role of this.roles) {
-      for (let playerIndex = 0;
-        !this.assignRoleToPlayer(playerArray[playerIndex], role) &&
-        playerIndex < playerArray.length;
-        playerIndex++) {
-        /**
-         * The for statement handles role assignment with assignRoleToPlayer
-         * as it returns true if a role was assigned and then
-         * instantly ends the loop.
-         */
+      for (const playerIndex in playerArray) {
+        if (this.assignRoleToPlayer(playerArray[playerIndex], role)) {
+          break;
+        }
+      }
+    }
+    // Player who did not get a role are villagers.
+    for (const playerId of this.players) {
+      if (!this.playerRoles.has(playerId)) {
+        this.playerRoles.set(playerArray, roles.villager);
       }
     }
   }

@@ -6,6 +6,8 @@ const {MessageActionRow, MessageSelectMenu} =
 module.exports = {
   name: events.startRoleSelection,
   async execute(interaction) {
+    console.log(`${interaction.user.tag} in #${interaction.channel.name} ` +
+    `tried to start role selection.`);
     // After the start button is pressed remove it.
     await interaction.update({
       content: interaction.message.content,
